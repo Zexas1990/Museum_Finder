@@ -3,4 +3,5 @@
     <dimen name="margin">16dp</dimen>
     <dimen name="titulo">20sp</dimen>
     <dimen name="btn">18sp</dimen>
+    <dimen name="museos">16sp</dimen>
 </resources>

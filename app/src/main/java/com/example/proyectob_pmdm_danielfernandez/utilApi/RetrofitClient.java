@@ -1,4 +1,4 @@
-package com.example.proyectob_pmdm_danielfernandez.util;
+package com.example.proyectob_pmdm_danielfernandez.utilApi;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

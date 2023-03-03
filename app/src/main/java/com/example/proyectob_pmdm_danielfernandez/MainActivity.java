@@ -2,6 +2,9 @@ package com.example.proyectob_pmdm_danielfernandez;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,8 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.proyectob_pmdm_danielfernandez.data.MuseosGeneral;
-import com.example.proyectob_pmdm_danielfernandez.util.API;
-import com.example.proyectob_pmdm_danielfernandez.util.RetrofitClient;
+import com.example.proyectob_pmdm_danielfernandez.utilApi.API;
+import com.example.proyectob_pmdm_danielfernandez.utilApi.RetrofitClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,11 +30,12 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
     static final int MAPA = 1;
 
     MuseosGeneral result;
-    Button btnConsultar;
-    Button btnFiltro;
+    Button btnConsultar, btnFiltro;
     TextView tvFiltro;
     String distrito;
     int listaMapa;
+    FragmentManager fm;
+    FragmentTransaction ft;
 
 
     @Override
@@ -59,45 +63,37 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
         btnConsultar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 consultarApi();
+                //confirmarModo();
+                cargarFragmentoLista();
+
             }
         });
     }
 
-    private void consultarApi() {
-        Retrofit ret = RetrofitClient.getClient(API.URL);
-        API api = ret.create(API.class);
-        Call<MuseosGeneral> call = api.getMuseos(distrito);
 
-        call.enqueue(new Callback<MuseosGeneral>() {
-            @Override
-            public void onResponse(Call<MuseosGeneral> call, @NonNull Response<MuseosGeneral> response) {
-                if (response.isSuccessful()) {
-                    result = response.body();
-                    assert result != null;
-                    confirmarModo();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MuseosGeneral> call, @NonNull Throwable t) {
-                Toast.makeText(MainActivity.this, "Error al conectar con el servidor", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void cargarFragmentoLista() {
+        fm = getSupportFragmentManager();
+        ft = fm.beginTransaction();
+        Fragment fragment = new ListaFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("distrito", distrito);
+        fragment.setArguments(bundle);
+        ft.replace(R.id.frLayout, fragment);
+        ft.commit();
 
     }
 
     private void confirmarModo() {
         if (listaMapa == LISTA) {
-            cargarLista();
+            cargarFragmentoLista();
         } else if (listaMapa == MAPA) {
             //TODO
         }
     }
 
-    private void cargarLista() {
 
-    }
+
+
 
 
     @Override
@@ -123,4 +119,6 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
         this.distrito = distrito;
         tvFiltro.setText("Distrito: " + distrito);
     }
+
+
 }
