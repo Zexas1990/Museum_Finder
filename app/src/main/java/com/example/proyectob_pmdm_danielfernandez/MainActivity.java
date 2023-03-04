@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
     Button btnConsultar, btnFiltro;
     TextView tvFiltro;
     String distrito;
-    int listaMapa;
+    int listaMapa = 0;
     FragmentManager fm;
     FragmentTransaction ft;
 
@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
         btnConsultar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //confirmarModo();
-                cargarFragmentoLista();
+                confirmarModo();
+                //cargarFragmentoLista();
 
             }
         });
@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
     private void cargarFragmentoLista() {
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
+
         Fragment fragment = new ListaFragment();
         Bundle bundle = new Bundle();
         bundle.putString("distrito", distrito);
@@ -83,15 +84,24 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
 
     }
 
+    private void cargarFragmentoMapa() {
+        fm = getSupportFragmentManager();
+        ft = fm.beginTransaction();
+        Fragment fragment = new MapaFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("distrito", distrito);
+        fragment.setArguments(bundle);
+        ft.replace(R.id.frLayout, fragment);
+        ft.commit();
+    }
+
     private void confirmarModo() {
         if (listaMapa == LISTA) {
             cargarFragmentoLista();
         } else if (listaMapa == MAPA) {
-            //TODO
+            cargarFragmentoMapa();
         }
     }
-
-
 
 
 
@@ -107,7 +117,8 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
         if (item.getItemId() == R.id.mnListado) {
             //TODO
         } else if (item.getItemId() == R.id.mnMapa) {
-            //TODO
+            tvFiltro.setText("");
+            ft.remove(new ListaFragment());
         }
 
         return super.onOptionsItemSelected(item);

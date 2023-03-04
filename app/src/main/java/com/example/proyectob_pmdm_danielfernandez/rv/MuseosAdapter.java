@@ -19,37 +19,27 @@ import java.util.List;
 public class MuseosAdapter extends RecyclerView.Adapter<MuseosAdapter.MuseosVH> implements View.OnClickListener{
 
     private List<Museo> museos;
-    private View.OnClickListener listener;
+    private  View.OnClickListener listener;
 
 
-    public MuseosAdapter(List<Museo> museos) {
+    public MuseosAdapter(List<Museo> museos, View.OnClickListener listener) {
         this.museos = museos;
-
-    }
-
-    public void setOnClickListener(View.OnClickListener listener) {
         this.listener = listener;
+
     }
 
-    @Override
-    public void onClick(View v) {
-        if (listener != null) {
-            listener.onClick(v);
-        }
-    }
 
     @NonNull
     @Override
     public MuseosVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_recy, parent, false);
-
+        v.setOnClickListener(this);
         return new MuseosVH(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MuseosVH holder, int position) {
-        Museo museo = museos.get(position);
-        holder.bindMuseo(museo);
+        holder.bindMuseo(museos.get(position));
     }
 
     @Override
@@ -57,34 +47,32 @@ public class MuseosAdapter extends RecyclerView.Adapter<MuseosAdapter.MuseosVH> 
         return museos.size();
     }
 
+    @Override
+    public void onClick(View v) {
+        if (listener != null) {
+            listener.onClick(v);
+        }
+
+    }
 
 
-    public static class MuseosVH extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class MuseosVH extends RecyclerView.ViewHolder{
 
         TextView tvNombre;
-        Museo museo;
+
 
         public MuseosVH(@NonNull View itemView) {
             super(itemView);
             tvNombre = itemView.findViewById(R.id.tvMuseo);
-            itemView.setOnClickListener(this);
+
         }
 
         public void bindMuseo(Museo museo){
-
             tvNombre.setText(museo.getTitle());
         }
 
 
-        @Override
-        public void onClick(View v) {
-            Context context = itemView.getContext();
-            Intent intent = new Intent(context, DetalleActivity.class);
-            //intent.putExtra("nombre", museo.getTitle());
-            //intent.putExtra("distrito", String.valueOf(museo.getAddress()));
-            //intent.putExtra("descripcion", museo.getRelation());
-            context.startActivity(intent);
-        }
+
     }
 
 

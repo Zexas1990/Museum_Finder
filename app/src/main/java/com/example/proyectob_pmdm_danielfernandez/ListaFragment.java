@@ -28,9 +28,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
-public class ListaFragment extends Fragment  {
+public class ListaFragment extends Fragment implements View.OnClickListener {
     RecyclerView rv;
-    List<Museo> museos = new ArrayList<>();
+    List<Museo> lmuseos = new ArrayList<>();
     LinearLayoutManager llmanager;
     MuseosAdapter adapter;
 
@@ -43,21 +43,13 @@ public class ListaFragment extends Fragment  {
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-       //adapter = new MuseosAdapter(museos);
-
-
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lista, container, false);
 
         rv = v.findViewById(R.id.rvMuseos);
         llmanager = new LinearLayoutManager(getContext());
-        llmanager.setOrientation(LinearLayoutManager.VERTICAL);
+        //llmanager.setOrientation(LinearLayoutManager.VERTICAL);
         rv.setLayoutManager(llmanager);
 
         String distrito = getArguments().getString("distrito");
@@ -65,7 +57,7 @@ public class ListaFragment extends Fragment  {
         System.out.println("+++++++++++++++++++++++++++++++");
         System.out.println(distrito);
 
-        consultarApiDistrito(distrito);
+        consultarApi(distrito);
 
 
         return v;
@@ -73,7 +65,7 @@ public class ListaFragment extends Fragment  {
 
     }
 
-    private void consultarApiDistrito(String distrito) {
+    private void consultarApi(String distrito) {
         Retrofit ret = RetrofitClient.getClient(API.URL);
         API api = ret.create(API.class);
         Call<MuseosGeneral> call = null;
@@ -103,28 +95,30 @@ public class ListaFragment extends Fragment  {
     }
 
     private void cargarRV(List<Museo> museos) {
+        //Rellenar lmuseos con museos
+        lmuseos.addAll(museos);
 
         llmanager = new LinearLayoutManager(getContext());
-        adapter = new MuseosAdapter(museos);
+        adapter = new MuseosAdapter(museos, this);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(llmanager);
         rv.setAdapter(adapter);
     }
-/*
+
+    @Override
     public void onClick(View v) {
         int pos = rv.getChildAdapterPosition(v);
-        String nombre = museos.get(pos).getTitle();
-        String distrito = String.valueOf(museos.get(pos).getAddress());
-        String descripcion = museos.get(pos).getRelation();
-
-        Intent i = new Intent(getContext(), DetalleActivity.class);
-        i.putExtra("nombre", nombre);
-        i.putExtra("distrito", distrito);
-        i.putExtra("descripcion", descripcion);
+        String id = lmuseos.get(pos).getId();
+        System.out.println("+++++++++++++++++++++++++++++++");
+        System.out.println("+++++++++++++++++++++++++++++++");
+        System.out.println("Posicion: " + pos);
+        System.out.println("Id: " + id);
+        String idTroceado = id.substring((id.lastIndexOf("/")+1));
+        Intent i = new Intent(v.getContext(), DetalleActivity.class);
+        i.putExtra("id", idTroceado);
         startActivity(i);
-
     }
-
+/*
 
     @Override
     public void onClick(View v) {
@@ -134,7 +128,6 @@ public class ListaFragment extends Fragment  {
         System.out.println(museo.getAddress().getDistrict().getId());
         String districtId = museo.getAddress().getDistrict().getId();
         String[] partsDis = districtId.split("/");
-
     }
     */
 

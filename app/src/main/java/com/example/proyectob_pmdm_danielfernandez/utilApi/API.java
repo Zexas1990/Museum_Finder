@@ -23,6 +23,13 @@ public interface API {
             @Query("distrito_nombre") String distrito
     );
 
+    @GET("tipo/entidadesyorganismos/{id}")
+    Call<MuseosGeneral> getMuseoID(
+            @Path("id") String id
+    )
+   ;
+
+
 
     //TODO: Añadir parámetros de búsqueda
 
