@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
     TextView tvFiltro;
     String distrito;
     int listaMapa = 0;
+    FrameLayout frLayout;
     FragmentManager fm;
     FragmentTransaction ft;
 
@@ -49,14 +51,22 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
         btnConsultar = findViewById(R.id.btnConsultar);
         btnFiltro = findViewById(R.id.btnFiltro);
         tvFiltro = findViewById(R.id.tvFiltro);
+        frLayout = findViewById(R.id.frLayout);
 
 
         btnFiltro.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FiltroDialog dialog = new FiltroDialog();
-                dialog.show(getSupportFragmentManager(), "FiltroDialog");
+                if (listaMapa == LISTA){
+                    distrito = "";
+                    FiltroDialog dialog = new FiltroDialog();
+                    dialog.show(getSupportFragmentManager(), "FiltroDialog");
+                    dialog.setCancelable(false);
+                    tvFiltro.setText("Distrito selecionado");
+                    frLayout.removeAllViews();
+                }else{
 
+                }
             }
         }));
 
@@ -64,8 +74,6 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
             @Override
             public void onClick(View v) {
                 confirmarModo();
-                //cargarFragmentoLista();
-
             }
         });
     }
@@ -81,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
         fragment.setArguments(bundle);
         ft.replace(R.id.frLayout, fragment);
         ft.commit();
-
     }
 
     private void cargarFragmentoMapa() {
@@ -93,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
         fragment.setArguments(bundle);
         ft.replace(R.id.frLayout, fragment);
         ft.commit();
+
+
     }
 
     private void confirmarModo() {
@@ -104,8 +113,6 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
     }
 
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -115,10 +122,22 @@ public class MainActivity extends AppCompatActivity implements OnDatosListener {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.mnListado) {
-            //TODO
+            listaMapa = LISTA;
+            Toast.makeText(this, R.string.cambioLista, Toast.LENGTH_SHORT).show();
+            tvFiltro.setText("Distrito seleccionado");
+            distrito = "";
+            btnConsultar.setText("Consultar Listado");
+            frLayout.removeAllViews();
+
         } else if (item.getItemId() == R.id.mnMapa) {
+            listaMapa = MAPA;
+            Toast.makeText(this, R.string.cambioMapa, Toast.LENGTH_SHORT).show();
             tvFiltro.setText("");
-            ft.remove(new ListaFragment());
+            btnConsultar.setText("Consultar Mapa");
+            frLayout.removeAllViews();
+            distrito = "";
+
+
         }
 
         return super.onOptionsItemSelected(item);

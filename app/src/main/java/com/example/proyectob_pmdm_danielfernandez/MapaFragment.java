@@ -25,7 +25,6 @@ public class MapaFragment extends Fragment {
 
     private GoogleMap gMap;
     private List<Museo> museos;
-    private TextView tvTitulo;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -34,13 +33,14 @@ public class MapaFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             MapaFragment.this.gMap = googleMap;
 
-            LatLng madrid = new LatLng(40.416775, -3.703790);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(madrid, 10));
+            LatLng alcobendas = new LatLng(40.5474600, -3.6419700);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(alcobendas, 10));
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
 
             if (museos != null) {
                 for (Museo museos : museos) {
+
                     System.out.println(museos.getTitle());
                     LatLng location = new LatLng(museos.getLocation().getLatitude(), museos.getLocation().getLongitude());
                     googleMap.addMarker(new MarkerOptions().position(location).title(museos.getTitle()));
@@ -48,19 +48,6 @@ public class MapaFragment extends Fragment {
             }
         }
     };
-
-    public void setMuseo(List<Museo> museo) {
-        this.museos = museo;
-
-        if (gMap != null) {
-            gMap.clear();
-            for (Museo museos : museo) {
-                System.out.println(museos.getTitle());
-                LatLng location = new LatLng(museos.getLocation().getLatitude(), museos.getLocation().getLongitude());
-                gMap.addMarker(new MarkerOptions().position(location).title(museos.getTitle()));
-            }
-        }
-    }
 
 
 

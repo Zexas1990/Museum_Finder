@@ -12,9 +12,10 @@
         android:id="@+id/tvNombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nombre"
+        android:text="@string/tv_nombre"
         android:textColor="@color/white"
         android:textStyle="bold"
+        android:textSize="@dimen/tv_nombre"
         android:layout_marginTop="@dimen/margin"
         />
 
@@ -39,13 +40,25 @@
         android:layout_marginTop="@dimen/margin"/>
 
     <TextView
+        android:id="@+id/tvDireccion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_direccion"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/tvArea"
+        android:layout_marginTop="@dimen/margin"/>
+
+
+
+    <TextView
         android:id="@+id/tvDescripcion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tv_descripcion"
         android:textColor="@color/white"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/tvArea"
+        app:layout_constraintTop_toBottomOf="@id/tvDireccion"
         android:layout_marginTop="@dimen/margin"/>
 
     <TextView

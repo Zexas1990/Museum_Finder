@@ -16,6 +16,8 @@ public class FiltroDialog extends DialogFragment{
 
     Spinner spnDis;
 
+    MainActivity mainActivity;
+
 
 
     @NonNull
@@ -34,6 +36,7 @@ public class FiltroDialog extends DialogFragment{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 listener.onAeptarDatosListenerDistrito(spnDis.getSelectedItem().toString());
+
             }
         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override

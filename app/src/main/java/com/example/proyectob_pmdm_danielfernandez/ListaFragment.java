@@ -34,7 +34,7 @@ public class ListaFragment extends Fragment implements View.OnClickListener {
     LinearLayoutManager llmanager;
     MuseosAdapter adapter;
 
-    Museo museo;
+
 
 
     public ListaFragment() {
@@ -108,27 +108,16 @@ public class ListaFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int pos = rv.getChildAdapterPosition(v);
-        String id = lmuseos.get(pos).getId();
+        String id = lmuseos.get(pos).getAtid();
         System.out.println("+++++++++++++++++++++++++++++++");
         System.out.println("+++++++++++++++++++++++++++++++");
-        System.out.println("Posicion: " + pos);
-        System.out.println("Id: " + id);
-        String idTroceado = id.substring((id.lastIndexOf("/")+1));
+        String[] idTroceado = id.split("/");
+        String idFinal = idTroceado[7];
+        System.out.println("Id: " + idFinal);
         Intent i = new Intent(v.getContext(), DetalleActivity.class);
-        i.putExtra("id", idTroceado);
+        i.putExtra("id", idFinal);
         startActivity(i);
     }
-/*
 
-    @Override
-    public void onClick(View v) {
-        int pos = rv.getChildAdapterPosition(v);
-        String id = museos.get(pos).getId();
-        Intent i = new Intent(v.getContext(), DetalleActivity.class);
-        System.out.println(museo.getAddress().getDistrict().getId());
-        String districtId = museo.getAddress().getDistrict().getId();
-        String[] partsDis = districtId.split("/");
-    }
-    */
 
 }
